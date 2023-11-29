@@ -1,5 +1,8 @@
 # Spotify App Remote for React Native
 
+Spotify IOS SDK - https://github.com/spotify/ios-sdk  
+Spotify Android SDK - https://github.com/spotify/android-sdk
+
 [![npm version](https://badge.fury.io/js/react-native-spotify-remote.svg)](https://badge.fury.io/js/react-native-spotify-remote)
 
 [![Spotify iOS SDK Version](https://img.shields.io/badge/Spotify%20iOS%20SDK-v1.2.2-brightgreen)](https://github.com/spotify/ios-sdk/commit/f9a7d53967de5ea633845c2387b7fc8f90b96265)
