@@ -15,8 +15,8 @@
 gradlew
 gradlew.bat
 build/
-gradlew
-gradlew.bat
+.screenshots
+.github
 .idea
 local.properties
 *.iml
