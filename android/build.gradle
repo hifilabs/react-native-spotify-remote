@@ -63,7 +63,7 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.aar'], dir: 'external/SpotifySDK/app-remote-lib/')
-    implementation fileTree(include: ['spotify-auth-release-2.1.0.aar'], dir: 'external/SpotifySDK/auth-lib/')
+    implementation 'com.spotify.android:auth:2.0.1' // Maven dependency (Preferred)
     implementation "com.google.code.gson:gson:2.8.9"  // needed by spotify-app-remote
     implementation "androidx.browser:browser:1.4.0"
     //noinspection GradleDynamicVersion
