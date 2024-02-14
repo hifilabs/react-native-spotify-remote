@@ -2,7 +2,7 @@
 #import "RNSpotifyRemoteAppRemote.h"
 #import <AVFoundation/AVFoundation.h>
 #import <React/RCTConvert.h>
-#import <SpotifyiOS.h>
+#import <SpotifyiOS/SpotifyiOS.h>
 #import "RNSpotifyRemoteConvert.h"
 #import "RNSpotifyItem.h"
 #import "RNSpotifyRemoteError.h"
@@ -29,7 +29,7 @@ static RNSpotifyRemoteAppRemote *sharedInstance = nil;
     NSMutableArray<RNSpotifyRemotePromise*>* _appRemoteCallbacks;
     NSMutableDictionary<NSString*,NSNumber*>* _eventSubscriptions;
     NSDictionary<NSString*,RNSpotifyRemoteSubscriptionCallback*>* _eventSubscriptionCallbacks;
-    
+
     SPTAppRemote *_appRemote;
 }
 - (void)initializeAppRemote:(NSString*)accessToken completionCallback:(RNSpotifyRemotePromise*)completion;
@@ -65,7 +65,7 @@ static RNSpotifyRemoteAppRemote *sharedInstance = nil;
             DLog(@"RNSpotify Initialized");
             _isConnecting=NO;
             _appRemoteCallbacks = [NSMutableArray array];
-            
+
             _appRemote = nil;
             _eventSubscriptions = @{}.mutableCopy;
             _eventSubscriptionCallbacks = [self initializeEventSubscribers];
@@ -384,10 +384,10 @@ RCT_EXPORT_METHOD(getRecommendedContentItems:(NSDictionary* _Nullable) options r
     if(options == nil){
         options = @{};
     }
-    
+
     NSString* contentType = options[@"type"] != nil ? [RCTConvert NSString:options[@"type"]] : SPTAppRemoteContentTypeDefault;
     BOOL flatten = options[@"flatten"] != nil ? [RCTConvert BOOL:options[@"flatten"]] : TRUE;
-    
+
     [self useContentApi:^(id<SPTAppRemoteContentAPI>contentApi) {
         [contentApi fetchRecommendedContentItemsForType:contentType flattenContainers:flatten
            callback:^(NSArray* _Nullable result, NSError * _Nullable error){
@@ -437,7 +437,7 @@ RCT_EXPORT_METHOD(getContentItemForUri:(NSString *)uri resolve:(RCTPromiseResolv
     [_eventSubscriptions enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSNumber * _Nonnull value, BOOL * _Nonnull stop) {
         RNSpotifyRemoteSubscriptionCallback* callback = self->_eventSubscriptionCallbacks[key];
         BOOL shouldSubscribe = [value boolValue];
-        
+
         // If a callback has been registered for this event then use it
         // Note: the callback structure makes sure to only subscribe/unsubscribe once
         if(callback != nil){

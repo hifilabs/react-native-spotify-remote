@@ -7,7 +7,7 @@
 //
 
 #import "RNSpotifyRemoteError.h"
-#import <SpotifyiOS.h>
+#import <SpotifyiOS/SpotifyiOS.h>
 
 
 @interface RNSpotifyRemoteErrorCode()
@@ -154,8 +154,8 @@ DEFINE_SPOTIFY_ERROR_CODE(SpotifyNotInstalled, @"Spotify does not appear to be i
             @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Cannot provide a nil error to RNSpotifyError" userInfo:nil];
         }
         _error = error;
-        
-        
+
+
         // Get the Error code based on error domain
         if([_error.domain isEqualToString:@"com.spotify.sdk.login"])
         {
@@ -172,8 +172,8 @@ DEFINE_SPOTIFY_ERROR_CODE(SpotifyNotInstalled, @"Spotify does not appear to be i
         {
             _code = [NSString stringWithFormat:@"%@:%ld", _error.domain, _error.code];
         }
-        
-        
+
+
         // Errors will typically have nested underlyingErrors, unwrap them grabbing
         // each message along the way, concatenate them for more descriptive errors
         NSError * underlyingError = _error;
@@ -184,15 +184,15 @@ DEFINE_SPOTIFY_ERROR_CODE(SpotifyNotInstalled, @"Spotify does not appear to be i
             if(errMessage != nil){
                 [messageParts addObject:errMessage];
             }
-            
+
             NSString* errRecovery = [underlyingError localizedRecoverySuggestion];
             if(errRecovery != nil){
                 [messageParts addObject:errRecovery];
             }
-            
+
             underlyingError = underlyingError.userInfo[@"NSUnderlyingError"];
         }
-        
+
         if([messageParts count] > 0){
             _message = [messageParts componentsJoinedByString:@"\r\n"];
         }else{

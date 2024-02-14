@@ -13,10 +13,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "9.0"
 
   s.source       = { :git => package['repository']['url'], :tag => "v#{s.version}", :submodules => true }
-  s.source_files  = "ios/*.{h,m}","ios/external/SpotifySDK/SpotifyiOS.xcframework/**/Headers/*.{h,m}"
+  s.source_files  = "ios/*.{h,m}"
   s.preserve_path = "ios/external/SpotifySDK/SpotifyiOS.xcframework"
   s.vendored_frameworks = "ios/external/SpotifySDK/SpotifyiOS.xcframework"
 
   s.dependency 'React-Core'
-  
+
 end

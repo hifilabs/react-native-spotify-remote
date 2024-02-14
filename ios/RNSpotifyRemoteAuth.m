@@ -2,7 +2,7 @@
 #import "RNSpotifyRemoteAuth.h"
 #import <AVFoundation/AVFoundation.h>
 #import <React/RCTConvert.h>
-#import <SpotifyiOS.h>
+#import <SpotifyiOS/SpotifyiOS.h>
 #import "RNSpotifyRemoteConvert.h"
 #import "RNSpotifyItem.h"
 #import "RNSpotifyRemoteError.h"
@@ -20,9 +20,9 @@ static RNSpotifyRemoteAuth *sharedInstance = nil;
     BOOL _initialized;
     BOOL _isInitializing;
     NSDictionary* _options;
-    
+
     NSMutableArray<RNSpotifyRemotePromise*>* _sessionManagerCallbacks;
-    
+
     SPTConfiguration* _apiConfiguration;
     SPTSessionManager* _sessionManager;
 }
@@ -87,7 +87,7 @@ static RNSpotifyRemoteAuth *sharedInstance = nil;
         NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:TRUE];
         NSURLQueryItem * errorDescription = [[[urlComponents queryItems] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", SPTAppRemoteErrorDescriptionKey]] firstObject];
         NSURLQueryItem * errorType = [[[urlComponents queryItems] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@",@"error"]] firstObject];
-        
+
         // If there was an error we should reject our pending Promise
         if(errorDescription){
             [RNSpotifyRemotePromise rejectCompletions:_sessionManagerCallbacks error:[RNSpotifyRemoteError errorWithCode:errorType.value message:errorDescription.value]];
@@ -149,7 +149,7 @@ RCT_EXPORT_METHOD(getSession:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseR
             [error reject:reject];
         }]];
     }
-    
+
     @try{
         if(_initialized && _sessionManager != nil){
             resolve([RNSpotifyRemoteConvert SPTSession:_sessionManager.session]);
@@ -171,12 +171,12 @@ RCT_EXPORT_METHOD(authorize:(NSDictionary*)options resolve:(RCTPromiseResolveBlo
     } onReject:^(RNSpotifyRemoteError *error) {
         [error reject:reject];
     }];
-    
+
     if(_isInitializing){
         [_sessionManagerCallbacks addObject:completion];
         return;
     }
-    
+
     if(_initialized && [_sessionManager session]!= nil && [_sessionManager session].isExpired == NO)
     {
         [completion resolve:[RNSpotifyRemoteConvert SPTSession:_sessionManager.session]];
@@ -225,24 +225,24 @@ RCT_EXPORT_METHOD(authorize:(NSDictionary*)options resolve:(RCTPromiseResolveBlo
     if(options[@"tokenSwapURL"] != nil){
         _apiConfiguration.tokenSwapURL = [NSURL URLWithString: options[@"tokenSwapURL"]];
     }
-    
+
     if(options[@"tokenRefreshURL"] != nil){
         _apiConfiguration.tokenRefreshURL = [NSURL URLWithString: options[@"tokenRefreshURL"]];
     }
-    
+
     if(options[@"playURI"] != nil){
         _apiConfiguration.playURI = options[@"playURI"];
     }
-    
+
     // Default Scope
     SPTScope scope = SPTAppRemoteControlScope | SPTUserReadPrivateScope;
     if(options[@"scopes"] != nil){
         scope = [RCTConvert NSUInteger:options[@"scopes"]];
     }
-    
+
     // Allocate our _sessionManager using our configuration
     _sessionManager = [SPTSessionManager sessionManagerWithConfiguration:_apiConfiguration delegate:self];
-    
+
     // Add our completion callback
     [_sessionManagerCallbacks addObject:completion];
 
@@ -250,7 +250,7 @@ RCT_EXPORT_METHOD(authorize:(NSDictionary*)options resolve:(RCTPromiseResolveBlo
     if(options[@"showDialog"] != nil){
         _sessionManager.alwaysShowAuthorizationDialog = [options[@"showDialog"] boolValue];
     }
-    
+
     // Initialize the auth flow
     if (@available(iOS 11, *)) {
         RCTExecuteOnMainQueue(^{
